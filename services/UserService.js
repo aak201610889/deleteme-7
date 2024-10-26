@@ -100,7 +100,6 @@ exports.getAllUesrs = async () => {
 
 
 
-
 exports.getUserById = async (id) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(id)) {
