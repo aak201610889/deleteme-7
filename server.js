@@ -11,12 +11,15 @@ const { initializeSocket } = require('./socket');
 const startServer = async () => {
   try {
     const app = express();
-    app.use(cors());
+    app.use(cors({
+      origin: "https://deleteme-7.onrender.com",
+      credentials: true,
+    }));
     await connectDB();
     await expressApp(app);
 
     const server = http.createServer(app); // Create an HTTP server
-    const io =   (server);
+    const io = initializeSocket(server);
     
     server.listen(PORT, () => {
       console.log(
