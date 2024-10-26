@@ -2,7 +2,10 @@ const socketIo = require("socket.io");
 const moment = require("moment");
 const Order = require("./models/Order");
 const userSessions = {};
-const { verifyAdminRole, updateSocketId } = require("./middlewares/authMiddleware");
+const {
+  verifyAdminRole,
+  updateSocketId,
+} = require("./middlewares/authMiddleware");
 const {
   getWaitingOrders,
   createNewOrder,
@@ -24,24 +27,26 @@ function initializeSocket(server) {
   io = socketIo(server, {
     cors: {
       origin: "https://deleteme-7.onrender.com",
+
       credentials: true,
     },
   });
-  
 
   io.on("connection", (socket) => {
     console.log(`User connected with socket ID ${socket.id}`);
-     updateSocketId(socket);
+    updateSocketId(socket);
     socket.join("admin-room");
     socket.on(
       "orderCustomer",
       async ({ tableNumber, productsIds, customerId, comments }, callback) => {
-        
         try {
           const user = await User.findById(customerId);
           if (!mongoose.Types.ObjectId.isValid(customerId)) {
-            return callback({ success: false, error: "Invalid customer ID format" });
-        }
+            return callback({
+              success: false,
+              error: "Invalid customer ID format",
+            });
+          }
           if (user) {
             user.socketId = socket.id;
             await user.save();
@@ -49,19 +54,14 @@ function initializeSocket(server) {
             const orderByCustomer = await PendingOrdersForCustomer(customerId);
 
             if (orderByCustomer.length > 0) {
-    
               const addProductOrder = await addProductInOrder(
                 productsIds,
                 orderByCustomer[0]._id,
                 comments
               );
-             
-              
 
               io.to("admin-room").emit("orderAdmin", [addProductOrder]);
             } else {
-        
-
               await createNewOrder(
                 { tableNumber, productsIds },
                 customerId,
@@ -70,14 +70,11 @@ function initializeSocket(server) {
             }
             const orders = await getWaitingOrders();
 
-        
-
             io.to("admin-room").emit("orderAdmin", orders);
             callback("ok");
           }
         } catch (error) {
           socketErrorHandler(socket, error);
-        
         }
       }
     );
@@ -126,7 +123,7 @@ function initializeSocket(server) {
                 message: message,
               });
               const customerSocket = await User.findById(order.customerId); // Fetch the user to get their socketId
-             
+
               if (paymentStatus === "paid") {
                 io.to(customerSocket.socketId).emit("getStatus", {
                   orderId,
@@ -138,7 +135,6 @@ function initializeSocket(server) {
             }
           } else {
             callback({ success: false, error: "Order or customer not found" });
-            
           }
         } catch (error) {
           console.error("Error updating order status:", error);
@@ -164,7 +160,6 @@ function initializeSocket(server) {
       const getOrderByCustoemrId = await Order.find({
         customerId: userId,
       }).sort({ createdAt: -1 });
-   
 
       if (getOrderByCustoemrId) {
         callback(getOrderByCustoemrId);
@@ -174,9 +169,6 @@ function initializeSocket(server) {
     });
 
     //____________________________________________________
-
-
-
 
     socket.on("approved", async (callback) => {
       const approvedOrder = await Order.find({
@@ -270,20 +262,16 @@ function initializeSocket(server) {
     });
 
     socket.on("getAllProducts", async (callback) => {
-
       try {
         const allProducts = await Product.find().sort({ createdAt: -1 });
-  
+
         callback(allProducts);
       } catch (error) {
-        console.log("error getAllProducts =====>",error)
+        console.log("error getAllProducts =====>", error);
       }
     });
 
-
-
     //________________
-  
 
     // socket.on("getAllUsersWithSocket", (callback) => {
     //   console.log("dddddwdlwpdlwplplplplplplplpl")
@@ -295,14 +283,14 @@ function initializeSocket(server) {
     //     }
     //   });
     // });
-    
+
     // socket.on("deleteUser", (userId, callback) => {
     //   console.log("Deleting user with ID:", userId);
     //   verifyAdminRole(socket, async () => {
     //     try {
     //       // Delete the user and get the customer's socket information
     //       const customerSocket = await deleteUserById(userId);
-          
+
     //       if (customerSocket) {
     //         console.log("=======socketId======>",customerSocket.socketId)
     //         // Emit the logout event to the specific customer's socket
@@ -310,7 +298,7 @@ function initializeSocket(server) {
     //           status: "logged out",
     //         });
     //       }
-    
+
     //       callback({ success: true, message: "User deleted successfully" }); // Notify admin about success
     //     } catch (error) {
     //       socketErrorHandler(socket, error);
@@ -318,13 +306,6 @@ function initializeSocket(server) {
     //     }
     //   });
     // });
-    
-    
-    
-
-
-
-
 
     socket.on("disconnect", async () => {
       console.log(`User with socket ID ${socket.id} disconnected`);

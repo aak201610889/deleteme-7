@@ -15,6 +15,8 @@ const startServer = async () => {
       origin: "https://deleteme-7.onrender.com",
       credentials: true,
     }));
+
+    // app.use(cors());
     await connectDB();
     await expressApp(app);
 
