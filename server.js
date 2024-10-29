@@ -11,10 +11,11 @@ const { initializeSocket } = require('./socket');
 const startServer = async () => {
   try {
     const app = express();
-    app.use(cors({
-      origin: "https://deleteme-7.onrender.com",
-      credentials: true,
-    }));
+    app.use(cors());
+    // app.use(cors({
+    //   origin: "https://deleteme-7.onrender.com",
+    //   credentials: true,
+    // }));
 
     // app.use(cors());
     await connectDB();

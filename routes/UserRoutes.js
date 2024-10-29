@@ -19,7 +19,7 @@ router.delete('/:id',verifyToken,authorizeRole, UserController.deleteUserById);
 
 
 
-router.post('/getUser/:tableNumber', UserController.getUserTable);
+router.post('/getUserTable', UserController.getUserTable);
 router.post('/getUser', UserController.getUserId);
 
 

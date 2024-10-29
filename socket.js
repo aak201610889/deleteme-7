@@ -26,11 +26,18 @@ let io;
 function initializeSocket(server) {
   io = socketIo(server, {
     cors: {
-      origin: "https://deleteme-7.onrender.com",
+      origin: "*",
 
       credentials: true,
     },
   });
+  // io = socketIo(server, {
+  //   cors: {
+  //     origin: "https://deleteme-7.onrender.com",
+
+  //     credentials: true,
+  //   },
+  // });
 
   io.on("connection", (socket) => {
     console.log(`User connected with socket ID ${socket.id}`);

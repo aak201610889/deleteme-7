@@ -105,7 +105,6 @@ exports.getUserById = async (id) => {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       throw new Error("Invalid user ID format");
     }
-    console.log("sdddddddsss");
     const deletedUser = await User.findById(id);
     if (!deletedUser) {
       throw new Error("User not found");

@@ -234,7 +234,7 @@ const addProductInOrder = async (productsItems, orderId, comments) => {
       { new: true }
     );
 
-    console.log("Updated order:", updatedOrder);
+    // console.log("Updated order:", updatedOrder);
     return updatedOrder;
   } catch (error) {
     throw new SocketError("هناك مشكلة في تعديل الطلب", 500);
