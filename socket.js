@@ -154,6 +154,7 @@ function initializeSocket(server) {
     socket.on("callGarson", async ({ tableNumber }, callback) => {
       try {
         if (tableNumber) {
+          console.log("====tableNumber==>,"  ,tableNumber)
           io.to("admin-room").emit("callgarsonToAdmin", tableNumber);
           callback("send successfully");
         }

@@ -57,8 +57,6 @@ const verifyAdminRole = async (socket, callback, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.SECRETKEY20S);
-    console.log(" decoded");
-    console.log(decoded);
 
     if (decoded.role !== "***") {
       return callback({

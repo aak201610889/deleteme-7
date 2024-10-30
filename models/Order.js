@@ -57,7 +57,7 @@ const OrderSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-  comments:[ { type: String, default: "" }],
+  comments: { type: String, default: "" },
 });
 
 // Create the Order model
