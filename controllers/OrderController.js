@@ -27,8 +27,7 @@ exports.getOrderById = async (req, res) => {
 exports.getAllOrders = async (req, res) => {
   try {
     const options = {
-      page: parseInt(req.query.page) || 1,
-      limit: parseInt(req.query.limit) || 10,
+     
       sort: req.query.sort || null,
       search: req.query.search || null
     };

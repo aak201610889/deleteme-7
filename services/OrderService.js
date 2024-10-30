@@ -10,11 +10,9 @@ exports.getOrderById = async (id) => {
 };
 
 exports.getAllOrders = async (query, options = {}) => {
-  const { page = 1, limit = 10, sort = null, search = {} } = options;
+  const {  sort = null, search = {} } = options;
 
-  if (isNaN(page) || page <= 0 || isNaN(limit) || limit <= 0) {
-    throw new Error('Invalid page or limit values');
-  }
+
 
   let searchQuery = {};
   if (search && typeof search === 'object' && Object.keys(search).length > 0) {
@@ -46,13 +44,10 @@ exports.getAllOrders = async (query, options = {}) => {
   const results = await Order
     .find(combinedQuery.search).populate('customerId', 'username email')
     .sort({ createdAt: -1 })
-    .skip((page - 1) * limit)
-    .limit(parseInt(limit));
+  
   const count = await Order.countDocuments();
   return {
     total: count,
-    page,
-    limit,
     results
   };
 };
