@@ -27,10 +27,13 @@ exports.getOrderById = async (req, res) => {
 exports.getAllOrders = async (req, res) => {
   try {
     const options = {
-     
-      sort: req.query.sort || null,
-      search: req.query.search || null
+      page: req.query.page|| null,
+      limit: req.query.limit || null,
+      search: req.query.search || null,
+      paginate: req.query.paginate||false
     };
+
+   
 
     const orders = await OrderService.getAllOrders(req.query, options);
     res.status(200).json(orders);
@@ -38,6 +41,8 @@ exports.getAllOrders = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+
 
 exports.updateOrder = async (req, res) => {
   try {
