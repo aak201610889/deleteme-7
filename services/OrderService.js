@@ -64,7 +64,6 @@ exports.getAllOrders = async (query, options = {}) => {
   }
   
 
-
   return {
     total: count,
     page,
