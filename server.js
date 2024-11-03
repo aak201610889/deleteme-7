@@ -8,6 +8,7 @@ const expressApp = require("./app");
 const connectDB = require("./database/connect");
 const { initializeSocket } = require('./socket');
 
+
 const startServer = async () => {
   try {
     const app = express();
@@ -34,5 +35,6 @@ const startServer = async () => {
     // process.exit(1);
   }
 };
+
 
 startServer();
