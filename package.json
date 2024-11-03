@@ -4,8 +4,8 @@
   "main": "server.js",
   "bin": "server.js",
   "scripts": {
-    "start": " NODE_ENV=dev pm2 start server.js --name backend --watch",
-    "dev": "nod server.js",
+    "start": " NODE_ENV=dev node server.js",
+    "dev": "node server.js",
     "test": "jest"
   },
   "dependencies": {
