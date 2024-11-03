@@ -1,7 +1,7 @@
 const express = require("express");
 const chalk = require("chalk");
 const http = require('http'); // Use the http module instead of https
-const cors = require('cors'); 
+// const cors = require('cors'); 
 
 const { PORT } = require("./config");
 const expressApp = require("./app");
@@ -11,7 +11,7 @@ const { initializeSocket } = require('./socket');
 const startServer = async () => {
   try {
     const app = express();
-    app.use(cors());
+    // app.use(cors());
     // app.use(cors({
     //   origin: "https://deleteme-7.onrender.com",
     //   credentials: true,
