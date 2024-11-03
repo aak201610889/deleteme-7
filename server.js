@@ -31,7 +31,7 @@ const startServer = async () => {
     });
   } catch (err) {
     console.error(chalk.gray(`Failed to start server: ${err.message}`));
-    process.exit(1);
+    // process.exit(1);
   }
 };
 

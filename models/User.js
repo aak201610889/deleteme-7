@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       enum: ["Customer", "***"],
+      default: 'Customer',
     },
     password: {
       type: String,
@@ -16,15 +17,24 @@ const userSchema = new mongoose.Schema(
           // If the role is 'Admin', the password must be provided
           return this.role !== "***" || (v && v.length > 0);
         },
-        message: (props) => `Password is required for 'Admin' role.`,
+        message: "Password is required for 'Admin' role.",
       },
     },
-
-    tableNumber: { type: String },
+    isReserved: { type: Boolean, default: false },
+    tableNumber: {
+      type: String,
+      validate: {
+        validator: function (v) {
+          // tableNumber must be provided if the role is 'Customer'
+          return this.role !== "Customer" || (v && v.length > 0);
+        },
+        message: "Table number is required for 'Customer' role.",
+      },
+    },
   },
   {
-    toJSON: { versionKey: false }, // Exclude __v in JSON representation
-    toObject: { versionKey: false }, // Exclude __v in object representation
+    toJSON: { versionKey: false },
+    toObject: { versionKey: false },
   }
 );
 

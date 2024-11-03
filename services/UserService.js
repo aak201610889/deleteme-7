@@ -52,26 +52,63 @@ exports.signupAdmin = async (data) => {
   return { user: userWithoutExtensions, token };
 };
 
+// exports.createUser = async (username, email, tableNumber) => {
+
+
+//   //ch3eck if that table
+//   const existingUser = await User.findOne({ email });
+//   if (existingUser) {
+//     throw new Error("User already exists");
+//   }
+
+//   const newUser = new User({
+//     username,
+//     email,
+//     socketId: null,
+//     tableNumber,
+//   });
+
+//   try {
+//     const savedUser = await newUser.save();
+//     return savedUser;
+//   } catch (error) {
+//     throw new Error(error);
+//   }
+// };
+
+
+
+
 exports.createUser = async (username, email, tableNumber) => {
-  const existingUser = await User.findOne({ email });
-  if (existingUser) {
-    throw new Error("User already exists");
+  // Check if the table is already reserved
+  const existingTableReservation = await User.findOne({ tableNumber, isReserved: true });
+  if (existingTableReservation) {
+    throw new Error(`Table ${tableNumber} is already reserved.`);
   }
 
+  // Check if the user with the same email already exists
+  const existingUser = await User.findOne({ email });
+  if (existingUser) {
+    throw new Error("User with this email already exists.");
+  }
+
+  // Create a new user and reserve the table
   const newUser = new User({
     username,
     email,
     socketId: null,
     tableNumber,
+    isReserved: true, // Mark the table as reserved
   });
 
   try {
     const savedUser = await newUser.save();
     return savedUser;
   } catch (error) {
-    throw new Error(error);
+    throw new Error(`Error creating user: ${error.message}`);
   }
 };
+
 
 exports.getAllUserswithAdmin = async () => {
   try {
